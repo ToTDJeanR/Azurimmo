@@ -20,7 +20,8 @@ class LocataireViewModel : ViewModel() {
             _locataires.value = listOf(
                 Locataire(1, "ALLANET", "Matys"),
                 Locataire(2, "DENIEL", "Théo"),
-                Locataire(3, "LEROSSIGNOLE", "Baptiste")
+                Locataire(3, "LEROSSIGNOLE", "Baptiste"),
+                Locataire(3, "MOUCHARD", "Mathieu")
             )
         }
     }
