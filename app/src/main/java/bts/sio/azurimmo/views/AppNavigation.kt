@@ -6,6 +6,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.compose.material3.Text
+import bts.sio.azurimmo.views.batiment.BatimentsConsulter
+
 
 @Composable
 fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -15,13 +17,13 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         modifier = modifier
     ) {
         composable("batiments_list") {
-            BatimentList()
+            BatimentList(navController) // Passer navController à BatimentList
         }
         composable("appartements_list") {
             AppartementList()
         }
         composable("contrats_list") {
-            Text("Page contrats")
+            ContratList()
         }
         composable("locataires_list") {
             LocataireList()
@@ -29,5 +31,12 @@ fun AppNavigation(navController: NavHostController, modifier: Modifier = Modifie
         composable("paiements_list") {
             Text("Page paiements")
         }
+        // Route dynamique pour afficher un bâtiment spécifique
+        composable("batiments/{id}") { backStackEntry ->
+            val batimentId = backStackEntry.arguments?.getString("id") ?: ""
+            BatimentsConsulter(batimentId)
+        }
     }
 }
+
+
