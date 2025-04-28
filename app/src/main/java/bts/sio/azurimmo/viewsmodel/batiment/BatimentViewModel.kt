@@ -3,25 +3,59 @@ package bts.sio.azurimmo.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import bts.sio.azurimmo.model.Batiment  // Mise à jour de l'import
+import bts.sio.azurimmo.api.RetrofitInstance
 
 class BatimentViewModel : ViewModel() {
     private val _batiments = MutableStateFlow<List<Batiment>>(emptyList())
     val batiments: StateFlow<List<Batiment>> = _batiments
 
-    init {
-        getBatiments()
-    }
+    private val _batiment = MutableStateFlow<Batiment?>(null)
+    val batiment: StateFlow<Batiment?> = _batiment
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading
+
+    private val _errorMessage = MutableStateFlow<String?>(null)
+    val errorMessage: StateFlow<String?> = _errorMessage
+
+    init { getBatiments() }
 
     private fun getBatiments() {
         viewModelScope.launch {
-            _batiments.value = listOf(
-                Batiment(1, "123 Rue Principale", "Nice"),
-                Batiment(2, "456 Avenue des Champs", "Marseille"),
-                Batiment(3, "789 Boulevard Haussmann", "Marseille")
-            )
+            _isLoading.value = true
+            _errorMessage.value = null  // Réinitialise l'erreur avant l'appel
+
+            try {
+                val response = RetrofitInstance.api.getBatiments()
+                _batiments.value = response
+            } catch (e: Exception) {
+                _errorMessage.value = "Erreur : ${e.localizedMessage ?: "Une erreur s'est produite"}"
+            } finally {
+                _isLoading.value = false
+                println("Chargement terminé")
+            }
+        }
+    }
+
+    fun getBatiment(batimentId: String) {
+        viewModelScope.launch {
+            _isLoading.value = true
+            _errorMessage.value = null
+
+            try {
+
+                val batiment: Batiment = RetrofitInstance.api.getBatimentById(batimentId) //  Appel API
+                "Adresse: ${batiment.adresse}\nVille: ${batiment.ville}"
+            } catch (e: Exception) {
+                _errorMessage.value = "Erreur : ${e.localizedMessage ?: "Une erreur s'est produite"}"
+            } finally {
+                _isLoading.value = false
+            }
         }
     }
 }

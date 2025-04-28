@@ -62,5 +62,4 @@ dependencies {
     implementation(libs.retrofit.gson)
     implementation(libs.navigation.compose)
     implementation(libs.compose.material.icons.extended)
-
 }

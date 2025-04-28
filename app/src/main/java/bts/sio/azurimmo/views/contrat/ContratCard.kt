@@ -6,10 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.shape.RoundedCornerShape
-import bts.sio.azurimmo.model.Locataire  // Mise à jour de l'import
+import bts.sio.azurimmo.model.Contrat  // Mise à jour de l'import
 
 @Composable
-fun LocataireCard(locataire: Locataire) {
+fun ContratCard(contrat: Contrat) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -20,9 +20,8 @@ fun LocataireCard(locataire: Locataire) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(text = locataire.prenom, style = MaterialTheme.typography.bodyLarge)
-            Text(text = locataire.nom, style = MaterialTheme.typography.bodyMedium)
-            Text(text = locataire.datenaiss, style = MaterialTheme.typography.bodyMedium)
+            Text(text = "debut : "+contrat.datedebut, style = MaterialTheme.typography.bodyMedium)
+            Text(text = "fin : "+contrat.datefin, style = MaterialTheme.typography.bodyMedium)
         }
     }
 }
